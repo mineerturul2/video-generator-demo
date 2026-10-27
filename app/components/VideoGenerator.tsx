@@ -222,6 +222,13 @@ export default function VideoGenerator() {
           >
             Your browser does not support the video tag.
           </video>
+          <a
+            href={videoUrl}
+            download
+            className="mt-3 inline-block py-2 px-4 rounded-md text-white font-medium bg-indigo-600 hover:bg-indigo-700"
+          >
+            Download Video
+          </a>
         </div>
       )}
     </div>
