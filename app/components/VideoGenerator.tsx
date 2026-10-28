@@ -224,7 +224,7 @@ export default function VideoGenerator() {
           </video>
           <a
             href={videoUrl}
-            download
+            download="generated-video.mp4"
             className="mt-3 inline-block py-2 px-4 rounded-md text-white font-medium bg-indigo-600 hover:bg-indigo-700"
           >
             Download Video
