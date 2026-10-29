@@ -183,8 +183,12 @@ export default function VideoGenerator() {
             onChange={(e) => setPrompt(e.target.value)}
             placeholder="Describe how you want the image to be animated..."
             className="w-full p-2 border rounded-md h-32"
+            maxLength={1000}
             disabled={isGenerating}
           />
+          <p className="mt-1 text-sm text-gray-500">
+            {prompt.length} / 1000 characters
+          </p>
         </div>
 
         <button
