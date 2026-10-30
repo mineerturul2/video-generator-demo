@@ -29,13 +29,17 @@ export default function VideoGenerator() {
   const [videoUrl, setVideoUrl] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [progress, setProgress] = useState<string>('');
+  const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null);
   const pollingTimeoutRef = useRef<NodeJS.Timeout | undefined>(undefined);
 
-  // Cleanup polling on unmount
+  // Cleanup polling and preview URL on unmount
   useEffect(() => {
     return () => {
       if (pollingTimeoutRef.current) {
         clearTimeout(pollingTimeoutRef.current);
+      }
+      if (imagePreviewUrl) {
+        URL.revokeObjectURL(imagePreviewUrl);
       }
     };
   }, []);
@@ -43,8 +47,13 @@ export default function VideoGenerator() {
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
+      // Revoke any existing preview URL before creating a new one
+      if (imagePreviewUrl) {
+        URL.revokeObjectURL(imagePreviewUrl);
+      }
       setImage(file);
       setError(null);
+      setImagePreviewUrl(URL.createObjectURL(file));
     }
   };
 
@@ -167,6 +176,15 @@ export default function VideoGenerator() {
             className="w-full p-2 border rounded-md"
             disabled={isGenerating}
           />
+          {imagePreviewUrl && (
+            <div className="mt-2">
+              <img
+                src={imagePreviewUrl}
+                alt="Preview of selected image"
+                className="w-full max-h-64 object-contain rounded-md border"
+              />
+            </div>
+          )}
           {image && (
             <p className="mt-2 text-sm text-gray-600">
               Selected: {image.name}
